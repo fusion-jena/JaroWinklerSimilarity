@@ -41,7 +41,7 @@ import java.util.Map;
  *            Type of the ranked values returned by the matching.
  * 
  * @author Jan Martin Keil
- * @since 1.0.0
+ * @since 0.1
  */
 public class JaroWinklerSimilarity<T> {
 	public final static int COMMON_PREFIX_LENGTH_LIMIT = 4;
@@ -69,7 +69,7 @@ public class JaroWinklerSimilarity<T> {
 	 * @see {@link #calculate(String, String, double)}
 	 * 
 	 * @author Jan Martin Keil
-	 * @since 1.0.0
+	 * @since 0.1
 	 */
 	public static Double calculate(String first, String second) {
 		return calculate(first, second, 0.0d);
@@ -95,7 +95,7 @@ public class JaroWinklerSimilarity<T> {
 	 * @see {@link #calculate(String, String)}
 	 * 
 	 * @author Jan Martin Keil
-	 * @since 1.0.0
+	 * @since 0.1
 	 */
 	public static Double calculate(String first, String second, double threshold) {
 		return new JaroWinklerSimilarity<String>(Tries.singletonTrieSet(first)).match(second, threshold).get(first);
@@ -117,7 +117,7 @@ public class JaroWinklerSimilarity<T> {
 	 *            Type of the map values and returned values by the matching.
 	 * 
 	 * @author Jan Martin Keil
-	 * @since 1.0.0
+	 * @since 0.1
 	 */
 	public static <T> JaroWinklerSimilarity<T> of(Map<String, T> terms) {
 		return new JaroWinklerSimilarity<T>(new LinkedListTrieMap<T>(terms));
@@ -134,7 +134,7 @@ public class JaroWinklerSimilarity<T> {
 	 *         given {@link Set}.
 	 * 
 	 * @author Jan Martin Keil
-	 * @since 1.0.0
+	 * @since 0.1
 	 */
 	public static JaroWinklerSimilarity<String> of(Collection<String> terms) {
 		return new JaroWinklerSimilarity<String>(new LinkedNodeTrieSet(terms));
@@ -201,7 +201,7 @@ public class JaroWinklerSimilarity<T> {
 	 * @see {@link #match(String, double)}
 	 * 
 	 * @author Jan Martin Keil
-	 * @since 1.0.0
+	 * @since 0.1
 	 */
 	public Map<String, Map<T, Double>> match(Collection<String> queries, double threshold) {
 		Map<String, Map<T, Double>> results = new HashMap<String, Map<T, Double>>();
@@ -225,7 +225,7 @@ public class JaroWinklerSimilarity<T> {
 	 * @see {@link #match(Collection, double)}
 	 * 
 	 * @author Jan Martin Keil
-	 * @since 1.0.0
+	 * @since 0.1
 	 */
 	public Map<T, Double> match(String query, double threshold) {
 		// initialize result
