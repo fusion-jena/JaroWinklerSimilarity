@@ -28,7 +28,7 @@ import java.util.Map;
 
 /**
  * <p>
- * Matches the content of a prepared {@link Map} or {@link Set} against given
+ * Matches the content of a prepared {@link Map} or {@link Collection} against given
  * queries using the Jaro Winkler similarity.
  * </p>
  * <p>
@@ -57,7 +57,7 @@ public class JaroWinklerSimilarity<T> {
 	/**
 	 * Returns the Jaro Winkler similarity of two given {@link String}s.
 	 * 
-	 * <b>Note:</b> If a {@link threshold} can be provided, it is recommended to use
+	 * <b>Note:</b> If a threshold can be provided, it is recommended to use
 	 * {@link #calculate(String, String, double)} to improve performance.
 	 * 
 	 * @param first
@@ -66,7 +66,7 @@ public class JaroWinklerSimilarity<T> {
 	 *            Second {@link String} to match.
 	 * @return Jaro Winkler similarity of the given {@link String}s.
 	 * 
-	 * @see {@link #calculate(String, String, double)}
+	 * @see #calculate(String, String, double)
 	 * 
 	 * @author Jan Martin Keil
 	 * @since 0.1
@@ -92,7 +92,7 @@ public class JaroWinklerSimilarity<T> {
 	 *         if the given {@link String}s do not meet the threshold.
 	 * 
 	 * 
-	 * @see {@link #calculate(String, String)}
+	 * @see #calculate(String, String)
 	 * 
 	 * @author Jan Martin Keil
 	 * @since 0.1
@@ -125,13 +125,13 @@ public class JaroWinklerSimilarity<T> {
 
 	/**
 	 * Prepares a {@link JaroWinklerSimilarity} instance to match the content of the
-	 * given {@link Set}. The created {@link JaroWinklerSimilarity} is not backed by
-	 * the {@link Set}, so it will not reflect changes of the {@link Set}.
+	 * given {@link Collection}. The created {@link JaroWinklerSimilarity} is not backed by
+	 * the {@link Collection}, so it will not reflect changes of the {@link Collection}.
 	 * 
 	 * @param terms
-	 *            {@link Set} of matched and returned terms.
+	 *            {@link Collection} of matched and returned terms.
 	 * @return A {@link JaroWinklerSimilarity} instance to match the content of the
-	 *         given {@link Set}.
+	 *         given {@link Collection}.
 	 * 
 	 * @author Jan Martin Keil
 	 * @since 0.1
@@ -198,7 +198,7 @@ public class JaroWinklerSimilarity<T> {
 	 * @return {@link Map} of the queries and the corresponding results consisting
 	 *         of a {@link Map} of the matching values and their ranking.
 	 * 
-	 * @see {@link #match(String, double)}
+	 * @see #match(String, double)
 	 * 
 	 * @author Jan Martin Keil
 	 * @since 0.1
@@ -222,7 +222,7 @@ public class JaroWinklerSimilarity<T> {
 	 *            Minimum similarity of matching terms.
 	 * @return {@link Map} of the matching values and their ranking.
 	 * 
-	 * @see {@link #match(Collection, double)}
+	 * @see #match(Collection, double)
 	 * 
 	 * @author Jan Martin Keil
 	 * @since 0.1
