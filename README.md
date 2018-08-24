@@ -8,14 +8,21 @@ This is a Java implementation of the Jaro Winkler Similarity, which is optimized
 
 ## Usage
 
-Binaries are avaliable on the central Maven repositories:
+Binaries are available on the central Maven repositories.
 
-```xml
-<dependency>
-  <groupId>de.uni_jena.cs.fusion</groupId>
-  <artifactId>similarity.jarowinkler</artifactId>
-  <version>0.1</version>
-</dependency>
+Simple example:
+
+```
+List<String> terms = Arrays.asList("hello world","goodbye world");
+JaroWinklerSimilarity<String> jws = JaroWinklerSimilarity.with(terms, 0.95);
+Map<String, Double> match = jws.apply("hello word");
+System.out.println(match);
+```
+
+This returns:
+
+```
+{hello world=0.9818181818181819}
 ```
 
 ## Acknowledgments
