@@ -12,7 +12,7 @@ Binaries are available on the central Maven repositories.
 
 Simple example:
 
-```
+```java
 List<String> terms = Arrays.asList("hello world","goodbye world");
 JaroWinklerSimilarity<String> jws = JaroWinklerSimilarity.with(terms, 0.95);
 Map<String, Double> match = jws.apply("hello word");
