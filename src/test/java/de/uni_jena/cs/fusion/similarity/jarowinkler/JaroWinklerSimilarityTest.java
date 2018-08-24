@@ -35,7 +35,7 @@ import org.junit.Test;
 public class JaroWinklerSimilarityTest {
 
 	@Test
-	public void matchSingle() {
+	public void apply() {
 		SortedMap<String, String> terms;
 		for (Map<String, Map<String, Double>> testCase : testData()) {
 			terms = new TreeMap<String, String>();
@@ -45,7 +45,7 @@ public class JaroWinklerSimilarityTest {
 				}
 			}
 			for (Entry<String, Map<String, Double>> queryResults : testCase.entrySet()) {
-				Map<String, Double> result = JaroWinklerSimilarity.of(terms).match(queryResults.getKey(), 0.5);
+				Map<String, Double> result = JaroWinklerSimilarity.with(terms, 0.5).apply(queryResults.getKey());
 				for (Entry<String, Double> expected : queryResults.getValue().entrySet()) {
 					String caseDescription = "Query: \"" + queryResults.getKey() + "\", Terms: " + terms.keySet()
 							+ ", Result: \"" + expected.getKey() + "\"";
@@ -56,29 +56,7 @@ public class JaroWinklerSimilarityTest {
 	}
 
 	@Test
-	public void matchCollection() {
-		SortedMap<String, String> terms;
-		for (Map<String, Map<String, Double>> testCase : testData()) {
-			terms = new TreeMap<String, String>();
-			for (Map<String, Double> queryResults : testCase.values()) {
-				for (String term : queryResults.keySet()) {
-					terms.put(term, term);
-				}
-			}
-			Map<String, Map<String, Double>> result = JaroWinklerSimilarity.of(terms).match(testCase.keySet(), 0.5);
-			for (Entry<String, Map<String, Double>> queryResults : testCase.entrySet()) {
-				for (Entry<String, Double> expected : queryResults.getValue().entrySet()) {
-					String caseDescription = "Query: \"" + queryResults.getKey() + "\", Terms: " + terms.keySet()
-							+ ", Result: \"" + expected.getKey() + "\"";
-					assertEquals(caseDescription, expected.getValue(),
-							result.get(queryResults.getKey()).get(expected.getKey()), 0.01);
-				}
-			}
-		}
-	}
-
-	@Test
-	public void calculateThreshold() {
+	public void of() {
 		SortedMap<String, String> terms;
 		for (Map<String, Map<String, Double>> testCase : testData()) {
 			terms = new TreeMap<String, String>();
@@ -89,30 +67,9 @@ public class JaroWinklerSimilarityTest {
 			}
 			for (Entry<String, Map<String, Double>> queryResults : testCase.entrySet()) {
 				for (Entry<String, Double> expected : queryResults.getValue().entrySet()) {
-					Double result = JaroWinklerSimilarity.calculate(expected.getKey(), queryResults.getKey(), 0.5);
-					String caseDescription = "Query: \"" + queryResults.getKey() + "\", Terms: " + terms.keySet()
-							+ ", Result: \"" + expected.getKey() + "\"";
-					assertEquals(caseDescription, expected.getValue(), result, 0.01);
-				}
-			}
-		}
-	}
-
-	@Test
-	public void calculateUnbound() {
-		SortedMap<String, String> terms;
-		for (Map<String, Map<String, Double>> testCase : testData()) {
-			terms = new TreeMap<String, String>();
-			for (Map<String, Double> queryResults : testCase.values()) {
-				for (String term : queryResults.keySet()) {
-					terms.put(term, term);
-				}
-			}
-			for (Entry<String, Map<String, Double>> queryResults : testCase.entrySet()) {
-				for (Entry<String, Double> expected : queryResults.getValue().entrySet()) {
-					Double result = JaroWinklerSimilarity.calculate(expected.getKey(), queryResults.getKey());
-					String caseDescription = "Query: \"" + queryResults.getKey() + "\", Terms: " + terms.keySet()
-							+ ", Result: \"" + expected.getKey() + "\"";
+					Double result = JaroWinklerSimilarity.of(expected.getKey(),
+							queryResults.getKey(), 0.5);
+					String caseDescription = "First: \"" + queryResults.getKey() + "\", Second: " + terms.keySet();
 					assertEquals(caseDescription, expected.getValue(), result, 0.01);
 				}
 			}
