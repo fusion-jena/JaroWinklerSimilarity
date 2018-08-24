@@ -271,8 +271,8 @@ public class JaroWinklerSimilarity<T> implements Function<String, Map<T, Double>
 	/**
 	 * Returns the Jaro Winkler similarity of two given {@link String}s.
 	 * 
-	 * <b>Note:</b> Use {@link #apply(String)} to calculate the similarity
-	 * of one {@link String} to many {@link String}s for performance reasons.
+	 * <b>Note:</b> Use {@link #apply(String)} to calculate the similarity of one
+	 * {@link String} to many {@link String}s for performance reasons.
 	 * 
 	 * @param first
 	 *            First {@link String} to match.
@@ -358,7 +358,7 @@ public class JaroWinklerSimilarity<T> implements Function<String, Map<T, Double>
 
 	private final Trie<T> trie;
 
-	private final double threshold;
+	private double threshold;
 
 	private JaroWinklerSimilarity(Trie<T> trie, double threshold) {
 		this.trie = trie;
@@ -401,5 +401,15 @@ public class JaroWinklerSimilarity<T> implements Function<String, Map<T, Double>
 					, results);
 		}
 		return results;
+	}
+
+	/**
+	 * Changes the used threshold.
+	 * 
+	 * @param threshold
+	 *            Minimum similarity of matching terms.
+	 */
+	public void setThreshold(double threshold) {
+		this.threshold = threshold;
 	}
 }
