@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/fusion-jena/JaroWinklerSimilarity.svg?branch=master)](https://travis-ci.org/fusion-jena/JaroWinklerSimilarity)
 [![Javadocs](https://javadoc.io/badge/de.uni_jena.cs.fusion/similarity.jarowinkler.svg)](https://javadoc.io/doc/de.uni_jena.cs.fusion/similarity.jarowinkler)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.uni_jena.cs.fusion/similarity.jarowinkler/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.uni_jena.cs.fusion/similarity.jarowinkler/)
+[![Maven Central](https://img.shields.io/maven-central/v/de.uni_jena.cs.fusion/similarity.jarowinkler.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22de.uni_jena.cs.fusion%22%20AND%20a:%22similarity.jarowinkler%22)
 
 # Jaro Winkler Similarity
 
