@@ -283,7 +283,6 @@ public class JaroWinklerSimilarity<T> implements Function<String, Map<T, Double>
 	 * @return Jaro Winkler similarity of {@code first} and {@code second} or
 	 *         {@code null} if they do not meet the threshold.
 	 * 
-	 * @author Jan Martin Keil
 	 * @since 1.0
 	 */
 	public static Double of(String first, String second, double threshold) {
@@ -324,7 +323,6 @@ public class JaroWinklerSimilarity<T> implements Function<String, Map<T, Double>
 	 * @return A {@link JaroWinklerSimilarity} instance to match the content of the
 	 *         given {@link Collection} considering the given threshold.
 	 * 
-	 * @author Jan Martin Keil
 	 * @since 1.0
 	 */
 	public static JaroWinklerSimilarity<String> with(Collection<String> terms, double threshold) {
@@ -349,7 +347,6 @@ public class JaroWinklerSimilarity<T> implements Function<String, Map<T, Double>
 	 * @param <T>
 	 *            Type of the map values and returned values by the matching.
 	 * 
-	 * @author Jan Martin Keil
 	 * @since 1.0
 	 */
 	public static <T> JaroWinklerSimilarity<T> with(Map<String, T> terms, double threshold) {
@@ -374,7 +371,6 @@ public class JaroWinklerSimilarity<T> implements Function<String, Map<T, Double>
 	 *            similarity.
 	 * @return {@link Map} of the matching values and their ranking.
 	 * 
-	 * @author Jan Martin Keil
 	 * @since 1.0
 	 */
 	@Override
