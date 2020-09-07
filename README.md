@@ -14,7 +14,7 @@ Binaries are available on the central Maven repositories:
 <dependency>
     <groupId>de.uni_jena.cs.fusion</groupId>
     <artifactId>similarity.jarowinkler</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
