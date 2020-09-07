@@ -160,6 +160,8 @@ class LinkedNodeTrieSet implements Trie<String> {
 				}
 				LinkedNodeTrieSet currentNode = nodeStack.peek();
 
+				// update prevElement
+				prevElement = currentElement;
 				// remove prefix from current element
 				currentElement = currentElement.substring(currentNode.keyLength());
 
@@ -170,9 +172,8 @@ class LinkedNodeTrieSet implements Trie<String> {
 				while (!elementAdded) {
 					if (currentElement.length() != 0) {
 						// currentElement is not empty
-						// -> did not reach target node
-						// -> currentElement must be inserted into a child of
-						// currentNode
+						// -> target node not reached
+						// -> insert currentElement into a child of currentNode
 
 						// get first child
 						LinkedNodeTrieSet currentChild = currentNode.child;
@@ -238,9 +239,6 @@ class LinkedNodeTrieSet implements Trie<String> {
 						nodeStack.push(currentNode);
 						keyLengthStack.push(currentNode.keyLength());
 					}
-
-					// update prevElement
-					prevElement = currentElement;
 
 					if (elementNodeChanged) {
 						for (LinkedNodeTrieSet trie : nodeStack) {
@@ -485,8 +483,7 @@ class LinkedNodeTrieSet implements Trie<String> {
 	 * Split the symbol of this node and move the content of this node into a new
 	 * child node.
 	 * 
-	 * @param i
-	 *            position to split the symbol
+	 * @param i position to split the symbol
 	 */
 	private void shiftDown(int i) {
 		this.child = this.copy();
@@ -518,8 +515,7 @@ class LinkedNodeTrieSet implements Trie<String> {
 	 * Move the content of this trie node into a new sibling node and give this trie
 	 * node a new symbol. The resulting new key is not contained in the trie.
 	 * 
-	 * @param e
-	 *            new symbol of this node
+	 * @param e new symbol of this node
 	 */
 	private void shiftRight(String e) {
 		// TODO create new trie node for e and update parents or siblings

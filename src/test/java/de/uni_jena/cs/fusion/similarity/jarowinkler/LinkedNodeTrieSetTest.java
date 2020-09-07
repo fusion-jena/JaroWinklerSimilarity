@@ -24,24 +24,23 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.junit.Test;
 
-import de.uni_jena.cs.fusion.similarity.jarowinkler.LinkedNodeTrieSet;
-import de.uni_jena.cs.fusion.similarity.jarowinkler.Trie;
-
 /**
  * @author Jan Martin Keil
  * @since 0.1
  */
 public class LinkedNodeTrieSetTest {
-	
+
 	@Test
 	public void add() {
 		LinkedNodeTrieSet trieSet = new LinkedNodeTrieSet();
@@ -70,11 +69,11 @@ public class LinkedNodeTrieSetTest {
 		assertTrue(trieSet.add("y"));
 		assertTrue(trieSet.contains("y"));
 
-		// Case 7: key not contained and will be sibling of contained key with same length
+		// Case 7: key not contained and sibling of contained key with same length
 		assertTrue(trieSet.add("abcdf"));
 		assertTrue(trieSet.contains("abcdf"));
 
-		// Case 8: key not contained and will be sibling of contained key with other length
+		// Case 8: key not contained and sibling of contained key with other length
 		assertTrue(trieSet.add("abgh"));
 		assertTrue(trieSet.contains("abgh"));
 	}
@@ -82,7 +81,7 @@ public class LinkedNodeTrieSetTest {
 	@Test
 	public void addAll() {
 		LinkedNodeTrieSet trieSet = new LinkedNodeTrieSet();
-		
+
 		// case 1: not sorted map
 		Set<String> unsortedSet = new LinkedHashSet<String>();
 		unsortedSet.add("xyz");
@@ -92,7 +91,7 @@ public class LinkedNodeTrieSetTest {
 		unsortedSet.add("y");
 		unsortedSet.add("abcdf");
 		unsortedSet.add("abgh");
-		
+
 		trieSet = new LinkedNodeTrieSet(unsortedSet);
 
 		assertTrue(trieSet.contains("xyz"));
@@ -105,7 +104,7 @@ public class LinkedNodeTrieSetTest {
 
 		// case 2: sorted map
 		SortedSet<String> sortedSet = new TreeSet<String>(unsortedSet);
-		
+
 		trieSet = new LinkedNodeTrieSet(sortedSet);
 
 		assertTrue(trieSet.contains("xyz"));
@@ -115,6 +114,14 @@ public class LinkedNodeTrieSetTest {
 		assertTrue(trieSet.contains("y"));
 		assertTrue(trieSet.contains("abcdf"));
 		assertTrue(trieSet.contains("abgh"));
+	}
+
+	@Test
+	public void addAllIssue1() {
+		// according to https://github.com/fusion-jena/JaroWinklerSimilarity/issues/1
+		List<String> list = Arrays.asList("d", "dindy", "impasse");
+		LinkedNodeTrieSet trie = new LinkedNodeTrieSet(list);
+		assertTrue(trie.contains("impasse"));
 	}
 
 	@Test
@@ -175,7 +182,7 @@ public class LinkedNodeTrieSetTest {
 		assertFalse(trieSet.containsLength(0));
 		assertFalse(trieSet.containsLength(1));
 		assertFalse(trieSet.containsLength(2));
-		
+
 		trieSet.add("");
 		assertTrue(trieSet.containsLength(0));
 		assertFalse(trieSet.containsLength(1));
@@ -217,9 +224,9 @@ public class LinkedNodeTrieSetTest {
 
 		trieSet.add("aa");
 		trieSet.add("ab");
-		
+
 		Trie<String> aNode = trieSet.childrenIterator().next();
-		
+
 		assertFalse(aNode.isPopulated());
 		trieSet.add("a");
 		assertTrue(aNode.isPopulated());
@@ -327,7 +334,4 @@ public class LinkedNodeTrieSetTest {
 		Trie<String> bNode = rootIterator.next();
 		assertEquals("b", bNode.value());
 	}
-	
-	
-	
 }
