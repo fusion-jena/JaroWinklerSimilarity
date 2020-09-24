@@ -290,18 +290,18 @@ public class JaroWinklerSimilarity<T> implements Function<String, Map<T, Double>
 		Map<String, Double> results = new HashMap<>();
 		// get lengths
 		int firstLength = first.length();
-		int secondLenght = second.length();
+		int secondLength = second.length();
 		// calculate window size for common characters
-		int windowSize = windowSize(secondLenght, firstLength);
+		int windowSize = windowSize(secondLength, firstLength);
 		// max value of l = the size of the emphasized first few characters
-		int maxCommonPrefixSize = Math.min(COMMON_PREFIX_LENGTH_LIMIT, Math.min(secondLenght, firstLength));
+		int maxCommonPrefixSize = Math.min(COMMON_PREFIX_LENGTH_LIMIT, Math.min(secondLength, firstLength));
 		// recursive traverse of the trie to get matching strings of length2
-		match(Tries.singletonTrieSet(first), threshold, second, secondLenght, firstLength, windowSize, 0 // minCommonCharacters
+		match(Tries.singletonTrieSet(first), threshold, second, secondLength, firstLength, windowSize, 0 // minCommonCharacters
 				, 0 // minHalfTranspositions
 				, maxCommonPrefixSize, 0 // saveCommonCharsQuery
-				, new boolean[secondLenght] // assignedQuery
+				, new boolean[secondLength] // assignedQuery
 				, new boolean[firstLength] // assignedTerm
-				, new char[Math.min(secondLenght, firstLength)] // commonCharsTerm
+				, new char[Math.min(secondLength, firstLength)] // commonCharsTerm
 				, results);
 		return results.get(first);
 	}
