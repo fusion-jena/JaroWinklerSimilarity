@@ -25,17 +25,18 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.zip.GZIPInputStream;
 
 import org.junit.Test;
-
-import de.uni_jena.cs.fusion.similarity.jarowinkler.LinkedListTrieMap;
-import de.uni_jena.cs.fusion.similarity.jarowinkler.Trie;
 
 public class LinkedListTrieMapTest {
 
@@ -90,8 +91,6 @@ public class LinkedListTrieMapTest {
 		assertTrue(lengths.contains(2));
 	}
 
-	
-	
 	@Test
 	public void containsLength() {
 		LinkedListTrieMap<String> trieMap = new LinkedListTrieMap<>();
@@ -99,7 +98,7 @@ public class LinkedListTrieMapTest {
 		assertFalse(trieMap.containsLength(0));
 		assertFalse(trieMap.containsLength(1));
 		assertFalse(trieMap.containsLength(2));
-		
+
 		trieMap.put("", "");
 		assertTrue(trieMap.containsLength(0));
 		assertFalse(trieMap.containsLength(1));
@@ -159,9 +158,9 @@ public class LinkedListTrieMapTest {
 
 		trieMap.put("aa", "");
 		trieMap.put("ab", "");
-		
+
 		Trie<String> aNode = trieMap.childrenIterator().next();
-		
+
 		assertFalse(aNode.isPopulated());
 		trieMap.put("a", "");
 		assertTrue(aNode.isPopulated());
@@ -232,12 +231,14 @@ public class LinkedListTrieMapTest {
 		// Case 6: key not contained and will be last child
 		assertNull(trieMap.put("y", "6"));
 		assertEquals("6", trieMap.get("y"));
-		
-		// Case 7: key not contained and will be sibling of contained key with same length
+
+		// Case 7: key not contained and will be sibling of contained key with same
+		// length
 		assertNull(trieMap.put("abcdf", "7"));
 		assertEquals("7", trieMap.get("abcdf"));
 
-		// Case 8: key not contained and will be sibling of contained key with other length
+		// Case 8: key not contained and will be sibling of contained key with other
+		// length
 		assertNull(trieMap.put("abgh", "8"));
 		assertEquals("8", trieMap.get("abgh"));
 
@@ -249,7 +250,7 @@ public class LinkedListTrieMapTest {
 	@Test
 	public void putAll() {
 		LinkedListTrieMap<String> trieMap = new LinkedListTrieMap<>();
-		
+
 		// case 1: not sorted map
 		Map<String, String> unsortedMap = new LinkedHashMap<String, String>();
 		unsortedMap.put("xyz", "1");
@@ -261,7 +262,7 @@ public class LinkedListTrieMapTest {
 		unsortedMap.put("abgh", "8");
 
 		trieMap = new LinkedListTrieMap<>(unsortedMap);
-		
+
 		assertEquals("1", trieMap.get("xyz"));
 		assertEquals("2", trieMap.get("abcde"));
 		assertEquals("4", trieMap.get("abc"));
@@ -272,7 +273,7 @@ public class LinkedListTrieMapTest {
 
 		// case 2: sorted map
 		SortedMap<String, String> sortedMap = new TreeMap<String, String>(unsortedMap);
-		
+
 		trieMap = new LinkedListTrieMap<>(sortedMap);
 
 		assertEquals("1", trieMap.get("xyz"));
@@ -347,6 +348,27 @@ public class LinkedListTrieMapTest {
 		assertEquals("ab", abNode.value());
 		Trie<String> bNode = rootIterator.next();
 		assertEquals("b", bNode.value());
+	}
+
+	@Test
+	public void memoryConsumption() throws IOException {
+		System.out.println(String.format("Memory consumption of dataset 1 in %s: %s byte",
+				LinkedListTrieMap.class.getName(), MemoryConsumption.of(() -> {
+					LinkedListTrieMap<String> trie = new LinkedListTrieMap<>();
+					try (BufferedReader bufferedReader = new BufferedReader(
+							new InputStreamReader(
+									new GZIPInputStream(this.getClass().getClassLoader().getResourceAsStream(
+											"dataset1/dbpedia_2016-10_persondata_en_names_unique_sorted.gz")),
+									"UTF8"))) {
+						String line = null;
+						while ((line = bufferedReader.readLine()) != null) {
+							trie.put(line, line);
+						}
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+					return trie;
+				})));
 	}
 
 }

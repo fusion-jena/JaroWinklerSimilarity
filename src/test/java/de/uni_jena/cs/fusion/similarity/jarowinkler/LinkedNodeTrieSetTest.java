@@ -24,6 +24,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -32,6 +35,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.zip.GZIPInputStream;
 
 import org.junit.Test;
 
@@ -333,5 +337,26 @@ public class LinkedNodeTrieSetTest {
 		assertEquals("ab", abNode.value());
 		Trie<String> bNode = rootIterator.next();
 		assertEquals("b", bNode.value());
+	}
+
+	@Test
+	public void memoryConsumption() throws IOException {
+		System.out.println(String.format("Memory consumption of dataset 1 in %s: %s byte",
+				LinkedNodeTrieSet.class.getName(), MemoryConsumption.of(() -> {
+					LinkedNodeTrieSet trie = new LinkedNodeTrieSet();
+					try (BufferedReader bufferedReader = new BufferedReader(
+							new InputStreamReader(
+									new GZIPInputStream(this.getClass().getClassLoader().getResourceAsStream(
+											"dataset1/dbpedia_2016-10_persondata_en_names_unique_sorted.gz")),
+									"UTF8"))) {
+						String line = null;
+						while ((line = bufferedReader.readLine()) != null) {
+							trie.add(line);
+						}
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+					return trie;
+				})));
 	}
 }
