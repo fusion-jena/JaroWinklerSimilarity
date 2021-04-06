@@ -50,6 +50,7 @@ public class JaroWinklerSimilarity<T> implements Function<String, Map<T, Double>
 	public final static int COMMON_PREFIX_LENGTH_LIMIT = 4;
 	public final static double BOOST_THRESHOLD = 0.7;
 	public final static double BOOST_FACTOR = 0.1;
+	public final static double DEFAULT_THRESHOLD = 0.95;
 
 	private static int equalInRange(boolean[] array, boolean expected, int lowerBound, int upperBound) {
 		int result = 0;
@@ -312,21 +313,60 @@ public class JaroWinklerSimilarity<T> implements Function<String, Map<T, Double>
 
 	/**
 	 * Prepares a {@link JaroWinklerSimilarity} instance to match the content of a
+	 * given {@link Collection}. The created
+	 * {@link JaroWinklerSimilarity} is not backed by the {@link Collection}, so it
+	 * will not reflect changes of the {@link Collection}.
+	 *
+	 * @param terms
+	 *            {@link Collection} of matched and returned terms.
+	 * @return A {@link JaroWinklerSimilarity} instance to match the content of the
+	 *         given {@link Collection}.
+	 *
+	 * @since 1.0.2
+	 */
+	public static JaroWinklerSimilarity<String> with(Collection<String> terms) {
+		return with(terms, DEFAULT_THRESHOLD);
+	}
+
+	/**
+	 * Prepares a {@link JaroWinklerSimilarity} instance to match the content of a
 	 * given {@link Collection} considering a given threshold. The created
 	 * {@link JaroWinklerSimilarity} is not backed by the {@link Collection}, so it
 	 * will not reflect changes of the {@link Collection}.
 	 * 
 	 * @param terms
 	 *            {@link Collection} of matched and returned terms.
-	 * @param threshold
-	 *            Minimum similarity of matching terms.
+	 * @param defaultThreshold
+	 *            Default minimum similarity of matching terms.
 	 * @return A {@link JaroWinklerSimilarity} instance to match the content of the
 	 *         given {@link Collection} considering the given threshold.
 	 * 
 	 * @since 1.0
 	 */
-	public static JaroWinklerSimilarity<String> with(Collection<String> terms, double threshold) {
-		return new JaroWinklerSimilarity<String>(new LinkedNodeTrieSet(terms), threshold);
+	public static JaroWinklerSimilarity<String> with(Collection<String> terms, double defaultThreshold) {
+		return new JaroWinklerSimilarity<String>(new LinkedNodeTrieSet(terms), defaultThreshold);
+	}
+
+	/**
+	 *
+	 * Prepares a {@link JaroWinklerSimilarity} instance to match the content of a
+	 * given {@link Map}. The matching will search for
+	 * similar keys, but return the corresponding values. The created
+	 * {@link JaroWinklerSimilarity} is not backed by the {@link Map}, so it will
+	 * not reflect changes of the {@link Map}.
+	 *
+	 * @param terms
+	 *            {@link Map} of matched terms and returned values.
+	 * @return A {@link JaroWinklerSimilarity} instance to match the content of the
+	 *         given {@link Map}.
+	 *
+	 * @param <T>
+	 *            Type of the map values and returned values by the matching.
+	 *
+	 * @since 1.0.2
+	 */
+	public static <T> JaroWinklerSimilarity<T> with(Map<String, T> terms) {
+		return with(terms, DEFAULT_THRESHOLD);
 	}
 
 	/**
@@ -339,8 +379,8 @@ public class JaroWinklerSimilarity<T> implements Function<String, Map<T, Double>
 	 * 
 	 * @param terms
 	 *            {@link Map} of matched terms and returned values.
-	 * @param threshold
-	 *            Minimum similarity of matching terms.
+	 * @param defaultThreshold
+	 *            Default minimum similarity of matching terms.
 	 * @return A {@link JaroWinklerSimilarity} instance to match the content of the
 	 *         given {@link Map} considering the given threshold.
 	 * 
@@ -349,32 +389,32 @@ public class JaroWinklerSimilarity<T> implements Function<String, Map<T, Double>
 	 * 
 	 * @since 1.0
 	 */
-	public static <T> JaroWinklerSimilarity<T> with(Map<String, T> terms, double threshold) {
-		return new JaroWinklerSimilarity<T>(new LinkedListTrieMap<T>(terms), threshold);
+	public static <T> JaroWinklerSimilarity<T> with(Map<String, T> terms, double defaultThreshold) {
+		return new JaroWinklerSimilarity<T>(new LinkedListTrieMap<T>(terms), defaultThreshold);
 	}
 
 	private final Trie<T> trie;
 
-	private double threshold;
+	private double defaultThreshold;
 
-	private JaroWinklerSimilarity(Trie<T> trie, double threshold) {
+	private JaroWinklerSimilarity(Trie<T> trie, double defaultThreshold) {
 		this.trie = trie;
-		this.threshold = threshold;
+		this.defaultThreshold = defaultThreshold;
 	}
 
 	/**
 	 * Matches a {@link String} against the terms of this
-	 * {@link JaroWinklerSimilarity} instance.
+	 * {@link JaroWinklerSimilarity} instance, considering a given threshold..
 	 * 
 	 * @param query
 	 *            {@link String} that will be compared to the terms to calculate the
 	 *            similarity.
+	 * @param threshold minimum similarity ofm matching terms.
 	 * @return {@link Map} of the matching values and their ranking.
 	 * 
-	 * @since 1.0
+	 * @since 1.0.2
 	 */
-	@Override
-	public Map<T, Double> apply(String query) {
+	public Map<T, Double> apply(String query, double threshold) {
 		// initialize result
 		Map<T, Double> results = new HashMap<>();
 
@@ -388,7 +428,7 @@ public class JaroWinklerSimilarity<T> implements Function<String, Map<T, Double>
 			// max value of l = the size of the emphasized first few characters
 			int maxCommonPrefixSize = Math.min(COMMON_PREFIX_LENGTH_LIMIT, Math.min(queryLength, termTargetLength));
 			// recursive traverse of the trie to get matching strings of length2
-			match(this.trie, this.threshold, query, queryLength, termTargetLength, windowSize, 0 // minCommonCharacters
+			match(this.trie, threshold, query, queryLength, termTargetLength, windowSize, 0 // minCommonCharacters
 					, 0 // minHalfTranspositions
 					, maxCommonPrefixSize, 0 // saveCommonCharsQuery
 					, new boolean[queryLength] // assignedQuery
@@ -400,12 +440,28 @@ public class JaroWinklerSimilarity<T> implements Function<String, Map<T, Double>
 	}
 
 	/**
-	 * Changes the used threshold.
-	 * 
-	 * @param threshold
-	 *            Minimum similarity of matching terms.
+	 * Matches a {@link String} against the terms of this
+	 * {@link JaroWinklerSimilarity} instance using the default threshold.
+	 *
+	 * @param query
+	 *            {@link String} that will be compared to the terms to calculate the
+	 *            similarity.
+	 * @return {@link Map} of the matching values and their ranking.
+	 *
+	 * @since 1.0
 	 */
-	public void setThreshold(double threshold) {
-		this.threshold = threshold;
+	@Override
+	public Map<T, Double> apply(String query) {
+		return apply(query, defaultThreshold);
+	}
+
+	/**
+	 * Changes the default threshold.
+	 * 
+	 * @param defaultThreshold
+	 *            Default minimum similarity of matching terms.
+	 */
+	public void setThreshold(double defaultThreshold) {
+		this.defaultThreshold = defaultThreshold;
 	}
 }
