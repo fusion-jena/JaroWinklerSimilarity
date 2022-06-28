@@ -92,17 +92,17 @@ interface Trie<V> {
 	/**
 	 * 
 	 * @param length
-	 * @return {@code true} if the length of the key of this trie node or any of
-	 *         its children equals the given {@code length} and that trie node
-	 *         is contained, otherwise {@code false}
+	 * @return {@code true} if the length of the key of this trie node or any of its
+	 *         children equals the given {@code length} and that trie node is
+	 *         contained, otherwise {@code false}
 	 */
 	default boolean containsLength(int length) {
 		return this.containedLengths().contains(length);
 	}
 
 	/**
-	 * Returns the depth of this trie node that is the key length of its parent
-	 * trie node.
+	 * Returns the depth of this trie node that is the key length of its parent trie
+	 * node.
 	 * 
 	 * @return depth of this trie node
 	 */
@@ -125,8 +125,8 @@ interface Trie<V> {
 	String key();
 
 	/**
-	 * Returns the length of the key of this trie node. This might be faster
-	 * than calling {@code key().length()}.
+	 * Returns the length of the key of this trie node. This might be faster than
+	 * calling {@code key().length()}.
 	 * 
 	 * @return the length of the key of this trie node
 	 */
@@ -153,8 +153,8 @@ interface Trie<V> {
 	String symbol();
 
 	/**
-	 * Returns the value of this trie node. Throws
-	 * {@link NoSuchElementException}, if this node is not populated.
+	 * Returns the value of this trie node. Throws {@link NoSuchElementException},
+	 * if this node is not populated.
 	 * 
 	 * @return value of this trie node
 	 * @throws NoSuchElementException

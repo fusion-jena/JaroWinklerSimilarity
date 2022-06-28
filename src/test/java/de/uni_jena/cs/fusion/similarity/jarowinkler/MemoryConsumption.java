@@ -16,8 +16,8 @@ public class MemoryConsumption {
 		Runtime.getRuntime().gc();
 		memoryAfter = ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed();
 		// use objects to avoid garbage collection
-		System.out.print(warmUpObject.getClass().toString().substring(0,0));
-		System.out.print(measuredObject.getClass().toString().substring(0,0));
+		System.out.print(warmUpObject.getClass().toString().substring(0, 0));
+		System.out.print(measuredObject.getClass().toString().substring(0, 0));
 		return memoryAfter - memoryBefore;
 	}
 }

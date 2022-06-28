@@ -36,8 +36,7 @@ import java.util.SortedMap;
  * @author Jan Martin Keil
  * @since 0.1
  *
- * @param <V>
- *            the type of mapped values
+ * @param <V> the type of mapped values
  */
 class TrieMap<V> implements Trie<V> {
 
@@ -134,8 +133,7 @@ class TrieMap<V> implements Trie<V> {
 	 * of the node representing the given key, after is has been inserted.</dd>
 	 * </dl>
 	 * 
-	 * @param key
-	 *            key to search
+	 * @param key key to search
 	 * @return closest node to the given key
 	 */
 	private TrieMap<V> getClosestNode(String key) {

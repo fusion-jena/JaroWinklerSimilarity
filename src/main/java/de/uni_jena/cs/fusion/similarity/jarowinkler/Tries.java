@@ -25,8 +25,6 @@ import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -138,7 +136,7 @@ class Tries {
 
 		@Override
 		public Set<java.util.Map.Entry<String, V>> entrySet() {
-			return Collections.singleton(mapEntry(key, value));
+			return Collections.singleton(new AbstractMap.SimpleEntry<String, V>(key, value));
 		}
 
 		@Override
@@ -245,10 +243,6 @@ class Tries {
 	@SuppressWarnings("unchecked")
 	public static <T> Trie<T> emptyTrie() {
 		return (Trie<T>) EMPTY_TRIE;
-	}
-
-	private static <K, V> Entry<K, V> mapEntry(K k, V v) {
-    return new AbstractMap.SimpleEntry<K, V>(k, v);
 	}
 
 	protected static <E> Iterator<E> singletonIterator(E element) {

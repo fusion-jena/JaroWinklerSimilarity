@@ -341,8 +341,8 @@ public class TrieSetTest {
 
 	@Test
 	public void memoryConsumption() throws IOException {
-		System.out.println(String.format("Memory consumption of dataset 1 in %s: %s byte",
-				TrieSet.class.getName(), MemoryConsumption.of(() -> {
+		System.out.println(String.format("Memory consumption of dataset 1 in %s: %s byte", TrieSet.class.getName(),
+				MemoryConsumption.of(() -> {
 					TrieSet trie = new TrieSet();
 					try (BufferedReader bufferedReader = new BufferedReader(
 							new InputStreamReader(

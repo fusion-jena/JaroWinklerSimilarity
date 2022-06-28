@@ -67,8 +67,7 @@ public class JaroWinklerSimilarityTest {
 			}
 			for (Entry<String, Map<String, Double>> queryResults : testCase.entrySet()) {
 				for (Entry<String, Double> expected : queryResults.getValue().entrySet()) {
-					Double result = JaroWinklerSimilarity.of(expected.getKey(),
-							queryResults.getKey(), 0.5);
+					Double result = JaroWinklerSimilarity.of(expected.getKey(), queryResults.getKey(), 0.5);
 					String caseDescription = "First: \"" + queryResults.getKey() + "\", Second: " + terms.keySet();
 					assertEquals(caseDescription, expected.getValue(), result, 0.01);
 				}
