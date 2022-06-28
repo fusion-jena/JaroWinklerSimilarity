@@ -39,7 +39,7 @@ import java.util.SortedMap;
  * @param <V>
  *            the type of mapped values
  */
-class LinkedListTrieMap<V> implements Trie<V> {
+class TrieMap<V> implements Trie<V> {
 
 	// content
 	private V value = null;
@@ -47,8 +47,8 @@ class LinkedListTrieMap<V> implements Trie<V> {
 	private boolean contained = false;
 
 	// navigation
-	private LinkedListTrieMap<V> parent = null;
-	private List<LinkedListTrieMap<V>> children = new ArrayList<LinkedListTrieMap<V>>();
+	private TrieMap<V> parent = null;
+	private List<TrieMap<V>> children = new ArrayList<TrieMap<V>>();
 	private List<? extends Trie<V>> childrenUnmodifiable = Collections.unmodifiableList(children);
 
 	// performance
@@ -56,10 +56,10 @@ class LinkedListTrieMap<V> implements Trie<V> {
 	private int depth = 0;
 	private BitSet lengths = new BitSet();
 
-	public LinkedListTrieMap() {
+	public TrieMap() {
 	}
 
-	public LinkedListTrieMap(Map<String, V> m) {
+	public TrieMap(Map<String, V> m) {
 		this.putAll(m);
 	}
 
@@ -91,7 +91,7 @@ class LinkedListTrieMap<V> implements Trie<V> {
 
 	V get(Object key) {
 		if (key instanceof String) {
-			LinkedListTrieMap<V> node = this.getNode((String) key);
+			TrieMap<V> node = this.getNode((String) key);
 			if (node != null) {
 				// NOTE: do not use ::value() to avoid exception
 				return node.value;
@@ -106,8 +106,8 @@ class LinkedListTrieMap<V> implements Trie<V> {
 	 * @param suffix
 	 * @return
 	 */
-	private LinkedListTrieMap<V> getNode(String key) {
-		LinkedListTrieMap<V> candidate = getClosestNode(key);
+	private TrieMap<V> getNode(String key) {
+		TrieMap<V> candidate = getClosestNode(key);
 		if (candidate.keyLength() == this.depth() + key.length() && key.endsWith(candidate.symbol())) {
 			return candidate;
 		} else {
@@ -138,7 +138,7 @@ class LinkedListTrieMap<V> implements Trie<V> {
 	 *            key to search
 	 * @return closest node to the given key
 	 */
-	private LinkedListTrieMap<V> getClosestNode(String key) {
+	private TrieMap<V> getClosestNode(String key) {
 		if (key.startsWith(this.key())) {
 			key = key.substring(this.keyLength());
 			if (this.children.isEmpty()) {
@@ -146,9 +146,9 @@ class LinkedListTrieMap<V> implements Trie<V> {
 			} else if (key.length() == 0) {
 				return this;
 			} else {
-				Iterator<LinkedListTrieMap<V>> iterator = this.children.iterator();
+				Iterator<TrieMap<V>> iterator = this.children.iterator();
 				while (iterator.hasNext()) {
-					LinkedListTrieMap<V> current = iterator.next();
+					TrieMap<V> current = iterator.next();
 					if (current.symbol().charAt(0) == key.charAt(0)) {
 						// current has appropriate first char
 						if (key.startsWith(current.symbol())) {
@@ -206,7 +206,7 @@ class LinkedListTrieMap<V> implements Trie<V> {
 	}
 
 	V put(String key, V value) {
-		LinkedListTrieMap<V> node = getClosestNode(key);
+		TrieMap<V> node = getClosestNode(key);
 		String nodeKey = node.key();
 		if (key.equals(nodeKey)) {
 			// got appropriate node
@@ -226,7 +226,7 @@ class LinkedListTrieMap<V> implements Trie<V> {
 		}
 	}
 
-	private LinkedListTrieMap<V> addSibling(String key, V value) {
+	private TrieMap<V> addSibling(String key, V value) {
 		StringBuilder prefix = new StringBuilder(this.parent.key());
 		for (int i = this.depth(); i < Math.min(this.keyLength(), key.length())
 				&& key.charAt(i) == this.symbol().charAt(i - this.depth()); i++) {
@@ -243,10 +243,10 @@ class LinkedListTrieMap<V> implements Trie<V> {
 		return prev;
 	}
 
-	private LinkedListTrieMap<V> splitNode(String key, V value, boolean contained) {
+	private TrieMap<V> splitNode(String key, V value, boolean contained) {
 		// update parent
 		this.parent.children.remove(this);
-		LinkedListTrieMap<V> node = this.parent.addChild(key, value, contained);
+		TrieMap<V> node = this.parent.addChild(key, value, contained);
 
 		// update new node
 		node.children.add(this);
@@ -261,9 +261,9 @@ class LinkedListTrieMap<V> implements Trie<V> {
 		return node;
 	}
 
-	private LinkedListTrieMap<V> addChild(String key, V value, boolean contained) {
+	private TrieMap<V> addChild(String key, V value, boolean contained) {
 		// create node
-		LinkedListTrieMap<V> node = new LinkedListTrieMap<V>();
+		TrieMap<V> node = new TrieMap<V>();
 		node.symbol = key.substring(this.keyLength());
 		node.value = value;
 		node.contained = contained;
@@ -275,9 +275,9 @@ class LinkedListTrieMap<V> implements Trie<V> {
 		if (this.children.isEmpty()) {
 			this.children.add(node);
 		} else {
-			ListIterator<LinkedListTrieMap<V>> siblings = this.children.listIterator();
+			ListIterator<TrieMap<V>> siblings = this.children.listIterator();
 			while (siblings.hasNext()) {
-				LinkedListTrieMap<V> sibling = siblings.next();
+				TrieMap<V> sibling = siblings.next();
 				if (sibling.symbol().charAt(0) > node.symbol.charAt(0)) {
 					siblings.previous();
 					siblings.add(node);
@@ -294,7 +294,7 @@ class LinkedListTrieMap<V> implements Trie<V> {
 
 	private void updateSizeAndLength() {
 		if (this.contained && !this.lengths.get(this.keyLength())) {
-			LinkedListTrieMap<V> node = this;
+			TrieMap<V> node = this;
 			while (node != null) {
 				node.lengths.set(this.keyLength());
 				node.size++;

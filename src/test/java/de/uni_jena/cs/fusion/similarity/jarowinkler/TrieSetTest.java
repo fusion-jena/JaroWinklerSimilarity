@@ -43,11 +43,11 @@ import org.junit.Test;
  * @author Jan Martin Keil
  * @since 0.1
  */
-public class LinkedNodeTrieSetTest {
+public class TrieSetTest {
 
 	@Test
 	public void add() {
-		LinkedNodeTrieSet trieSet = new LinkedNodeTrieSet();
+		TrieSet trieSet = new TrieSet();
 
 		// Case 1: empty map
 		assertTrue(trieSet.add("xyz"));
@@ -84,7 +84,7 @@ public class LinkedNodeTrieSetTest {
 
 	@Test
 	public void addAll() {
-		LinkedNodeTrieSet trieSet = new LinkedNodeTrieSet();
+		TrieSet trieSet = new TrieSet();
 
 		// case 1: not sorted map
 		Set<String> unsortedSet = new LinkedHashSet<String>();
@@ -96,7 +96,7 @@ public class LinkedNodeTrieSetTest {
 		unsortedSet.add("abcdf");
 		unsortedSet.add("abgh");
 
-		trieSet = new LinkedNodeTrieSet(unsortedSet);
+		trieSet = new TrieSet(unsortedSet);
 
 		assertTrue(trieSet.contains("xyz"));
 		assertTrue(trieSet.contains("abcde"));
@@ -109,7 +109,7 @@ public class LinkedNodeTrieSetTest {
 		// case 2: sorted map
 		SortedSet<String> sortedSet = new TreeSet<String>(unsortedSet);
 
-		trieSet = new LinkedNodeTrieSet(sortedSet);
+		trieSet = new TrieSet(sortedSet);
 
 		assertTrue(trieSet.contains("xyz"));
 		assertTrue(trieSet.contains("abcde"));
@@ -124,13 +124,13 @@ public class LinkedNodeTrieSetTest {
 	public void addAllIssue1() {
 		// according to https://github.com/fusion-jena/JaroWinklerSimilarity/issues/1
 		List<String> list = Arrays.asList("d", "dindy", "impasse");
-		LinkedNodeTrieSet trie = new LinkedNodeTrieSet(list);
+		TrieSet trie = new TrieSet(list);
 		assertTrue(trie.contains("impasse"));
 	}
 
 	@Test
 	public void childrenIterator() {
-		LinkedNodeTrieSet tireSet = new LinkedNodeTrieSet();
+		TrieSet tireSet = new TrieSet();
 
 		tireSet.add("a");
 		tireSet.add("b");
@@ -155,7 +155,7 @@ public class LinkedNodeTrieSetTest {
 
 	@Test
 	public void containedLengths() {
-		LinkedNodeTrieSet trieSet = new LinkedNodeTrieSet();
+		TrieSet trieSet = new TrieSet();
 
 		Collection<Integer> lengths = trieSet.containedLengths();
 		assertTrue(lengths.isEmpty());
@@ -181,7 +181,7 @@ public class LinkedNodeTrieSetTest {
 
 	@Test
 	public void containsLength() {
-		LinkedNodeTrieSet trieSet = new LinkedNodeTrieSet();
+		TrieSet trieSet = new TrieSet();
 
 		assertFalse(trieSet.containsLength(0));
 		assertFalse(trieSet.containsLength(1));
@@ -205,7 +205,7 @@ public class LinkedNodeTrieSetTest {
 
 	@Test
 	public void depth() {
-		LinkedNodeTrieSet root = new LinkedNodeTrieSet();
+		TrieSet root = new TrieSet();
 
 		root.add("a");
 		root.add("ab");
@@ -224,7 +224,7 @@ public class LinkedNodeTrieSetTest {
 
 	@Test
 	public void isPopulated() {
-		LinkedNodeTrieSet trieSet = new LinkedNodeTrieSet();
+		TrieSet trieSet = new TrieSet();
 
 		trieSet.add("aa");
 		trieSet.add("ab");
@@ -238,7 +238,7 @@ public class LinkedNodeTrieSetTest {
 
 	@Test
 	public void key() {
-		LinkedNodeTrieSet root = new LinkedNodeTrieSet();
+		TrieSet root = new TrieSet();
 
 		root.add("a");
 		root.add("ab");
@@ -257,7 +257,7 @@ public class LinkedNodeTrieSetTest {
 
 	@Test
 	public void keyLength() {
-		LinkedNodeTrieSet root = new LinkedNodeTrieSet();
+		TrieSet root = new TrieSet();
 
 		root.add("a");
 		root.add("ab");
@@ -276,7 +276,7 @@ public class LinkedNodeTrieSetTest {
 
 	@Test
 	public void size() {
-		LinkedNodeTrieSet trieSet = new LinkedNodeTrieSet();
+		TrieSet trieSet = new TrieSet();
 
 		// initial
 		assertEquals(0, trieSet.size());
@@ -304,7 +304,7 @@ public class LinkedNodeTrieSetTest {
 
 	@Test
 	public void symbol() {
-		LinkedNodeTrieSet root = new LinkedNodeTrieSet();
+		TrieSet root = new TrieSet();
 
 		root.add("a");
 		root.add("ab");
@@ -323,7 +323,7 @@ public class LinkedNodeTrieSetTest {
 
 	@Test
 	public void value() {
-		LinkedNodeTrieSet root = new LinkedNodeTrieSet();
+		TrieSet root = new TrieSet();
 
 		root.add("a");
 		root.add("ab");
@@ -342,8 +342,8 @@ public class LinkedNodeTrieSetTest {
 	@Test
 	public void memoryConsumption() throws IOException {
 		System.out.println(String.format("Memory consumption of dataset 1 in %s: %s byte",
-				LinkedNodeTrieSet.class.getName(), MemoryConsumption.of(() -> {
-					LinkedNodeTrieSet trie = new LinkedNodeTrieSet();
+				TrieSet.class.getName(), MemoryConsumption.of(() -> {
+					TrieSet trie = new TrieSet();
 					try (BufferedReader bufferedReader = new BufferedReader(
 							new InputStreamReader(
 									new GZIPInputStream(this.getClass().getClassLoader().getResourceAsStream(

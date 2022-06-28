@@ -33,32 +33,32 @@ import java.util.Stack;
  * @author Jan Martin Keil
  * @since 0.1
  */
-class LinkedNodeTrieSet implements Trie<String> {
+class TrieSet implements Trie<String> {
 
 	protected int size = 0;
 	protected int depth = 0;
 	protected boolean contained = false;
 	protected BitSet lengths = new BitSet();
-	protected LinkedNodeTrieSet sibling = null;
-	protected LinkedNodeTrieSet child = null;
-	protected LinkedNodeTrieSet parent = null;
+	protected TrieSet sibling = null;
+	protected TrieSet child = null;
+	protected TrieSet parent = null;
 	protected String symbol = "";
 
-	LinkedNodeTrieSet() {
+	TrieSet() {
 	}
 
-	private LinkedNodeTrieSet(String symbol, LinkedNodeTrieSet parent) {
+	private TrieSet(String symbol, TrieSet parent) {
 		this.symbol = symbol;
 		this.parent = parent;
 		this.depth = parent.keyLength();
 	}
 
-	public LinkedNodeTrieSet(Collection<? extends String> c) {
+	public TrieSet(Collection<? extends String> c) {
 		this.addAll(c);
 	}
 
-	private LinkedNodeTrieSet(String symbol, BitSet lengths, boolean contained, int size, int depth,
-			LinkedNodeTrieSet sibling, LinkedNodeTrieSet child, LinkedNodeTrieSet parent) {
+	private TrieSet(String symbol, BitSet lengths, boolean contained, int size, int depth,
+			TrieSet sibling, TrieSet child, TrieSet parent) {
 		this.child = child;
 		this.contained = contained;
 		this.depth = depth;
@@ -127,7 +127,7 @@ class LinkedNodeTrieSet implements Trie<String> {
 		boolean elementNodeChanged;
 		boolean elementAdded;
 		String prevElement = "";
-		Stack<LinkedNodeTrieSet> nodeStack = new Stack<LinkedNodeTrieSet>();
+		Stack<TrieSet> nodeStack = new Stack<TrieSet>();
 		nodeStack.push(this);
 		Stack<Integer> keyLengthStack = new Stack<Integer>();
 		keyLengthStack.push(this.keyLength());
@@ -158,7 +158,7 @@ class LinkedNodeTrieSet implements Trie<String> {
 						keyLengthStack.pop();
 					}
 				}
-				LinkedNodeTrieSet currentNode = nodeStack.peek();
+				TrieSet currentNode = nodeStack.peek();
 
 				// update prevElement
 				prevElement = currentElement;
@@ -176,14 +176,14 @@ class LinkedNodeTrieSet implements Trie<String> {
 						// -> insert currentElement into a child of currentNode
 
 						// get first child
-						LinkedNodeTrieSet currentChild = currentNode.child;
+						TrieSet currentChild = currentNode.child;
 
 						if (currentChild == null) {
 							// current node has no children
 
 							elementAdded = true;
 							elementNodeChanged = true;
-							currentNode.child = new LinkedNodeTrieSet(currentElement, currentNode);
+							currentNode.child = new TrieSet(currentElement, currentNode);
 							currentNode.child.contained = true;
 							currentNode = currentNode.child;
 
@@ -219,7 +219,7 @@ class LinkedNodeTrieSet implements Trie<String> {
 							} else {
 								// element must be inserted after current child
 								elementNodeChanged = true;
-								LinkedNodeTrieSet newSibling = new LinkedNodeTrieSet(currentElement, currentNode);
+								TrieSet newSibling = new TrieSet(currentElement, currentNode);
 								newSibling.contained = true;
 								newSibling.sibling = currentChild.sibling;
 								currentChild.sibling = newSibling;
@@ -241,7 +241,7 @@ class LinkedNodeTrieSet implements Trie<String> {
 					}
 
 					if (elementNodeChanged) {
-						for (LinkedNodeTrieSet trie : nodeStack) {
+						for (TrieSet trie : nodeStack) {
 							trie.size++;
 							trie.lengths.set(currentElementLength);
 						}
@@ -257,7 +257,7 @@ class LinkedNodeTrieSet implements Trie<String> {
 	private boolean addChild(String e) {
 		if (this.child == null) {
 			// this has no child
-			this.child = new LinkedNodeTrieSet(e, this);
+			this.child = new TrieSet(e, this);
 		}
 		// add e to child
 		if (this.child.add(e)) {
@@ -272,7 +272,7 @@ class LinkedNodeTrieSet implements Trie<String> {
 	private boolean addSibling(String e) {
 		if (this.sibling == null) {
 			// this has no child
-			this.sibling = new LinkedNodeTrieSet(e, this.parent);
+			this.sibling = new TrieSet(e, this.parent);
 		}
 		// add e to child
 		if (this.sibling.add(e)) {
@@ -287,8 +287,8 @@ class LinkedNodeTrieSet implements Trie<String> {
 	@Override
 	public Iterator<Trie<String>> childrenIterator() {
 		return new Iterator<Trie<String>>() {
-			private LinkedNodeTrieSet next = child;
-			private LinkedNodeTrieSet current = null;
+			private TrieSet next = child;
+			private TrieSet current = null;
 
 			@Override
 			public boolean hasNext() {
@@ -296,7 +296,7 @@ class LinkedNodeTrieSet implements Trie<String> {
 			}
 
 			@Override
-			public LinkedNodeTrieSet next() {
+			public TrieSet next() {
 				current = next;
 				next = next.sibling;
 				return current;
@@ -305,7 +305,7 @@ class LinkedNodeTrieSet implements Trie<String> {
 	}
 
 	boolean contains(Object o) {
-		LinkedNodeTrieSet node = this.getNode((String) o);
+		TrieSet node = this.getNode((String) o);
 		return node != null && node.isPopulated();
 	}
 
@@ -325,8 +325,8 @@ class LinkedNodeTrieSet implements Trie<String> {
 		return result;
 	}
 
-	private LinkedNodeTrieSet copy() {
-		return new LinkedNodeTrieSet(this.symbol, this.lengths, this.contained, this.size, this.depth, this.sibling,
+	private TrieSet copy() {
+		return new TrieSet(this.symbol, this.lengths, this.contained, this.size, this.depth, this.sibling,
 				this.child, this.parent);
 	}
 
@@ -335,7 +335,7 @@ class LinkedNodeTrieSet implements Trie<String> {
 		return this.depth;
 	}
 
-	private LinkedNodeTrieSet getNode(String key) {
+	private TrieSet getNode(String key) {
 		// catch special cases
 		if (this.depth != 0) {
 			// this is not the root node
@@ -351,7 +351,7 @@ class LinkedNodeTrieSet implements Trie<String> {
 		}
 
 		// regular case
-		LinkedNodeTrieSet currentNode = this;
+		TrieSet currentNode = this;
 		while (key.length() != 0) {
 			if (key.length() >= currentNode.symbol.length()
 					&& key.substring(0, currentNode.symbol.length()).equals(currentNode.symbol)) {
@@ -366,7 +366,7 @@ class LinkedNodeTrieSet implements Trie<String> {
 					Iterator<Trie<String>> childrenIterator = currentNode.childrenIterator();
 					currentNode = null;
 					while (childrenIterator.hasNext()) {
-						LinkedNodeTrieSet child = (LinkedNodeTrieSet) childrenIterator.next();
+						TrieSet child = (TrieSet) childrenIterator.next();
 						if (child.symbol.charAt(0) == key.charAt(0)) {
 							// child is the relevant child
 
@@ -408,7 +408,7 @@ class LinkedNodeTrieSet implements Trie<String> {
 
 	public boolean remove(Object o) {
 		// get element
-		LinkedNodeTrieSet node = this.getNode((String) o);
+		TrieSet node = this.getNode((String) o);
 
 		if (node != null && node.isPopulated()) {
 			// element is contained
@@ -441,7 +441,7 @@ class LinkedNodeTrieSet implements Trie<String> {
 			boolean lengthContained = false;
 
 			// iterate all parents
-			LinkedNodeTrieSet currentParent = node;
+			TrieSet currentParent = node;
 			while (currentParent.parent != null) {
 				currentParent = currentParent.parent;
 
@@ -506,7 +506,7 @@ class LinkedNodeTrieSet implements Trie<String> {
 
 		Iterator<Trie<String>> grandchildren = this.child.childrenIterator();
 		while (grandchildren.hasNext()) {
-			LinkedNodeTrieSet grandchild = (LinkedNodeTrieSet) grandchildren.next();
+			TrieSet grandchild = (TrieSet) grandchildren.next();
 			grandchild.parent = this.child;
 		}
 	}
@@ -551,7 +551,7 @@ class LinkedNodeTrieSet implements Trie<String> {
 			// this is not the first child of the parent
 
 			// get sibling trie node pointing on this trie node
-			LinkedNodeTrieSet prevSibling = this.parent.child;
+			TrieSet prevSibling = this.parent.child;
 			while (prevSibling.sibling != this) {
 				prevSibling = prevSibling.sibling;
 			}
@@ -585,7 +585,7 @@ class LinkedNodeTrieSet implements Trie<String> {
 			// this is not the first child of the parent
 
 			// get sibling trie node pointing on this trie node
-			LinkedNodeTrieSet prevSibling = this.parent.child;
+			TrieSet prevSibling = this.parent.child;
 			while (prevSibling.sibling != this) {
 				prevSibling = prevSibling.sibling;
 			}

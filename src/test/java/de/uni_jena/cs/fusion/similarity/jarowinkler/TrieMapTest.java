@@ -38,11 +38,11 @@ import java.util.zip.GZIPInputStream;
 
 import org.junit.Test;
 
-public class LinkedListTrieMapTest {
+public class TrieMapTest {
 
 	@Test
 	public void childrenIterator() {
-		LinkedListTrieMap<String> tireMap = new LinkedListTrieMap<>();
+		TrieMap<String> tireMap = new TrieMap<>();
 
 		tireMap.put("a", "");
 		tireMap.put("b", "");
@@ -67,7 +67,7 @@ public class LinkedListTrieMapTest {
 
 	@Test
 	public void containedLengths() {
-		LinkedListTrieMap<String> trieMap = new LinkedListTrieMap<>();
+		TrieMap<String> trieMap = new TrieMap<>();
 
 		Collection<Integer> lengths = trieMap.containedLengths();
 		assertTrue(lengths.isEmpty());
@@ -93,7 +93,7 @@ public class LinkedListTrieMapTest {
 
 	@Test
 	public void containsLength() {
-		LinkedListTrieMap<String> trieMap = new LinkedListTrieMap<>();
+		TrieMap<String> trieMap = new TrieMap<>();
 
 		assertFalse(trieMap.containsLength(0));
 		assertFalse(trieMap.containsLength(1));
@@ -117,7 +117,7 @@ public class LinkedListTrieMapTest {
 
 	@Test
 	public void depth() {
-		LinkedListTrieMap<String> root = new LinkedListTrieMap<>();
+		TrieMap<String> root = new TrieMap<>();
 
 		root.put("a", "a");
 		root.put("ab", "ab");
@@ -136,7 +136,7 @@ public class LinkedListTrieMapTest {
 
 	@Test
 	public void get() {
-		LinkedListTrieMap<String> trieMap = new LinkedListTrieMap<>();
+		TrieMap<String> trieMap = new TrieMap<>();
 
 		// Case 1: empty map
 		assertNull(trieMap.get(""));
@@ -154,7 +154,7 @@ public class LinkedListTrieMapTest {
 
 	@Test
 	public void isPopulated() {
-		LinkedListTrieMap<String> trieMap = new LinkedListTrieMap<>();
+		TrieMap<String> trieMap = new TrieMap<>();
 
 		trieMap.put("aa", "");
 		trieMap.put("ab", "");
@@ -168,7 +168,7 @@ public class LinkedListTrieMapTest {
 
 	@Test
 	public void key() {
-		LinkedListTrieMap<String> root = new LinkedListTrieMap<>();
+		TrieMap<String> root = new TrieMap<>();
 
 		root.put("a", "a");
 		root.put("ab", "ab");
@@ -187,7 +187,7 @@ public class LinkedListTrieMapTest {
 
 	@Test
 	public void keyLength() {
-		LinkedListTrieMap<String> root = new LinkedListTrieMap<>();
+		TrieMap<String> root = new TrieMap<>();
 
 		root.put("a", "a");
 		root.put("ab", "ab");
@@ -206,7 +206,7 @@ public class LinkedListTrieMapTest {
 
 	@Test
 	public void put() {
-		LinkedListTrieMap<String> trieMap = new LinkedListTrieMap<>();
+		TrieMap<String> trieMap = new TrieMap<>();
 
 		// Case 1: empty map
 		assertNull(trieMap.put("xyz", "1"));
@@ -249,7 +249,7 @@ public class LinkedListTrieMapTest {
 
 	@Test
 	public void putAll() {
-		LinkedListTrieMap<String> trieMap = new LinkedListTrieMap<>();
+		TrieMap<String> trieMap = new TrieMap<>();
 
 		// case 1: not sorted map
 		Map<String, String> unsortedMap = new LinkedHashMap<String, String>();
@@ -261,7 +261,7 @@ public class LinkedListTrieMapTest {
 		unsortedMap.put("abcdf", "7");
 		unsortedMap.put("abgh", "8");
 
-		trieMap = new LinkedListTrieMap<>(unsortedMap);
+		trieMap = new TrieMap<>(unsortedMap);
 
 		assertEquals("1", trieMap.get("xyz"));
 		assertEquals("2", trieMap.get("abcde"));
@@ -274,7 +274,7 @@ public class LinkedListTrieMapTest {
 		// case 2: sorted map
 		SortedMap<String, String> sortedMap = new TreeMap<String, String>(unsortedMap);
 
-		trieMap = new LinkedListTrieMap<>(sortedMap);
+		trieMap = new TrieMap<>(sortedMap);
 
 		assertEquals("1", trieMap.get("xyz"));
 		assertEquals("2", trieMap.get("abcde"));
@@ -287,7 +287,7 @@ public class LinkedListTrieMapTest {
 
 	@Test
 	public void size() {
-		LinkedListTrieMap<String> trieMap = new LinkedListTrieMap<>();
+		TrieMap<String> trieMap = new TrieMap<>();
 
 		// initial
 		assertEquals(0, trieMap.size());
@@ -315,7 +315,7 @@ public class LinkedListTrieMapTest {
 
 	@Test
 	public void symbol() {
-		LinkedListTrieMap<String> root = new LinkedListTrieMap<>();
+		TrieMap<String> root = new TrieMap<>();
 
 		root.put("a", "a");
 		root.put("ab", "ab");
@@ -334,7 +334,7 @@ public class LinkedListTrieMapTest {
 
 	@Test
 	public void value() {
-		LinkedListTrieMap<String> root = new LinkedListTrieMap<>();
+		TrieMap<String> root = new TrieMap<>();
 
 		root.put("a", "a");
 		root.put("ab", "ab");
@@ -353,8 +353,8 @@ public class LinkedListTrieMapTest {
 	@Test
 	public void memoryConsumption() throws IOException {
 		System.out.println(String.format("Memory consumption of dataset 1 in %s: %s byte",
-				LinkedListTrieMap.class.getName(), MemoryConsumption.of(() -> {
-					LinkedListTrieMap<String> trie = new LinkedListTrieMap<>();
+				TrieMap.class.getName(), MemoryConsumption.of(() -> {
+					TrieMap<String> trie = new TrieMap<>();
 					try (BufferedReader bufferedReader = new BufferedReader(
 							new InputStreamReader(
 									new GZIPInputStream(this.getClass().getClassLoader().getResourceAsStream(

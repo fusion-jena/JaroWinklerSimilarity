@@ -326,7 +326,7 @@ public class JaroWinklerSimilarity<T> implements Function<String, Map<T, Double>
 	 * @since 1.0
 	 */
 	public static JaroWinklerSimilarity<String> with(Collection<String> terms, double threshold) {
-		return new JaroWinklerSimilarity<String>(new LinkedNodeTrieSet(terms), threshold);
+		return new JaroWinklerSimilarity<String>(new TrieSet(terms), threshold);
 	}
 
 	/**
@@ -350,7 +350,7 @@ public class JaroWinklerSimilarity<T> implements Function<String, Map<T, Double>
 	 * @since 1.0
 	 */
 	public static <T> JaroWinklerSimilarity<T> with(Map<String, T> terms, double threshold) {
-		return new JaroWinklerSimilarity<T>(new LinkedListTrieMap<T>(terms), threshold);
+		return new JaroWinklerSimilarity<T>(new TrieMap<T>(terms), threshold);
 	}
 
 	private final Trie<T> trie;
