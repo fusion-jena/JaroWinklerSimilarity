@@ -248,23 +248,7 @@ class Tries {
 	}
 
 	private static <K, V> Entry<K, V> mapEntry(K k, V v) {
-		return new Map.Entry<K, V>() {
-
-			@Override
-			public K getKey() {
-				return k;
-			}
-
-			@Override
-			public V getValue() {
-				return v;
-			}
-
-			@Override
-			public V setValue(V value) {
-				throw new UnsupportedOperationException();
-			}
-		};
+    return new AbstractMap.SimpleEntry<K, V>(k, v);
 	}
 
 	protected static <E> Iterator<E> singletonIterator(E element) {

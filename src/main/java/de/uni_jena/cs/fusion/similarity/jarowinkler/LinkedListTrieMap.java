@@ -25,7 +25,6 @@ import java.util.BitSet;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -49,7 +48,7 @@ class LinkedListTrieMap<V> implements Trie<V> {
 
 	// navigation
 	private LinkedListTrieMap<V> parent = null;
-	private List<LinkedListTrieMap<V>> children = new LinkedList<LinkedListTrieMap<V>>();
+	private List<LinkedListTrieMap<V>> children = new ArrayList<LinkedListTrieMap<V>>();
 	private List<? extends Trie<V>> childrenUnmodifiable = Collections.unmodifiableList(children);
 
 	// performance
