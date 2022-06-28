@@ -30,9 +30,6 @@ import java.util.NoSuchElementException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.uni_jena.cs.fusion.similarity.jarowinkler.Trie;
-import de.uni_jena.cs.fusion.similarity.jarowinkler.Tries;
-
 public class TriesTest {
 
 	@Test
