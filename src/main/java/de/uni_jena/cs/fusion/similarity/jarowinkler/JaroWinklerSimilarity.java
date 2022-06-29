@@ -231,7 +231,7 @@ public class JaroWinklerSimilarity<T> implements Function<String, Map<T, Double>
 					if (termTrie.isPopulated()) {
 						// current node is contained
 						// add object of current node to results
-						results.put(termTrie.value(), maxSimilarity);
+						results.merge(termTrie.value(), maxSimilarity, Math::max);
 					}
 				} else {
 					// iterate children

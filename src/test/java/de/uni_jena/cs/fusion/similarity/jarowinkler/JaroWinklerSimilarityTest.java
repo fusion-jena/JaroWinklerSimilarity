@@ -21,18 +21,39 @@ package de.uni_jena.cs.fusion.similarity.jarowinkler;
  */
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.junit.Test;
 
 public class JaroWinklerSimilarityTest {
+
+	@Test
+	public void testMaxSimilarityWithConflicts() {
+
+		HashMap<String, String> terms = new HashMap<>();
+		terms.put("directeur général", "wrong");
+		terms.put("directeur", "correct");
+		terms.put("direttrice", "correct");
+
+		Map<String, Double> directeur = JaroWinklerSimilarity.with(terms, 0.88).apply("directeur");
+
+		Optional<Entry<String, Double>> max = directeur.entrySet()
+			.stream()
+			.max(Entry.comparingByValue());
+
+		assertTrue(max.isPresent());
+
+		assertEquals(max.get().getKey(), "correct");
+	}
 
 	@Test
 	public void apply() {
