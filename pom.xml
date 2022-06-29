@@ -1,11 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>de.uni_jena.cs.fusion</groupId>
 	<artifactId>similarity.jarowinkler</artifactId>
-	<version>1.0.2-SNAPSHOT</version>
+	<version>1.1.0</version>
 
 	<name>Jaro Winkler Similarity</name>
 	<description>An implementation of the Jaro Winkler Similarity, which is optimized for the search of similar strings in a large set of strings.</description>
@@ -24,6 +22,21 @@
 			<email>jan-martin.keil@uni-jena.de</email>
 		</developer>
 	</developers>
+
+	<contributors>
+		<contributor>
+			<name>Finn Petersen</name>
+			<email>finn.petersen@cronn.de</email>
+		</contributor>
+		<contributor>
+			<name>Jonathan Oddy</name>
+			<email>jonathan.oddy@transferwise.com</email>
+		</contributor>
+		<contributor>
+			<name>Sirko Schindler</name>
+			<email>git@sirko.org</email>
+		</contributor>
+	</contributors>
 
 	<licenses>
 		<license>
