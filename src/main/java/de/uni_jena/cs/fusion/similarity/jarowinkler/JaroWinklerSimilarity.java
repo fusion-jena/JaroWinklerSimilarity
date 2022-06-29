@@ -49,7 +49,6 @@ public class JaroWinklerSimilarity<T> implements Function<String, Map<T, Double>
 	public final static int COMMON_PREFIX_LENGTH_LIMIT = 4;
 	public final static double BOOST_THRESHOLD = 0.7;
 	public final static double BOOST_FACTOR = 0.1;
-	public final static double DEFAULT_THRESHOLD = 0.95;
 
 	private static int equalInRange(boolean[] array, boolean expected, int lowerBound, int upperBound) {
 		int result = 0;
@@ -296,22 +295,6 @@ public class JaroWinklerSimilarity<T> implements Function<String, Map<T, Double>
 
 	/**
 	 * Prepares a {@link JaroWinklerSimilarity} instance to match the content of a
-	 * given {@link Collection}. The created {@link JaroWinklerSimilarity} is not
-	 * backed by the {@link Collection}, so it will not reflect changes of the
-	 * {@link Collection}.
-	 *
-	 * @param terms {@link Collection} of matched and returned terms.
-	 * @return A {@link JaroWinklerSimilarity} instance to match the content of the
-	 *         given {@link Collection}.
-	 *
-	 * @since 1.0.2
-	 */
-	public static JaroWinklerSimilarity<String> with(Collection<String> terms) {
-		return with(terms, DEFAULT_THRESHOLD);
-	}
-
-	/**
-	 * Prepares a {@link JaroWinklerSimilarity} instance to match the content of a
 	 * given {@link Collection} considering a given threshold. The created
 	 * {@link JaroWinklerSimilarity} is not backed by the {@link Collection}, so it
 	 * will not reflect changes of the {@link Collection}.
@@ -325,25 +308,6 @@ public class JaroWinklerSimilarity<T> implements Function<String, Map<T, Double>
 	 */
 	public static JaroWinklerSimilarity<String> with(Collection<String> terms, double defaultThreshold) {
 		return new JaroWinklerSimilarity<String>(new LinkedNodeTrieSet(terms), defaultThreshold);
-	}
-
-	/**
-	 *
-	 * Prepares a {@link JaroWinklerSimilarity} instance to match the content of a
-	 * given {@link Map}. The matching will search for similar keys, but return the
-	 * corresponding values. The created {@link JaroWinklerSimilarity} is not backed
-	 * by the {@link Map}, so it will not reflect changes of the {@link Map}.
-	 *
-	 * @param terms {@link Map} of matched terms and returned values.
-	 * @return A {@link JaroWinklerSimilarity} instance to match the content of the
-	 *         given {@link Map}.
-	 *
-	 * @param <T> Type of the map values and returned values by the matching.
-	 *
-	 * @since 1.0.2
-	 */
-	public static <T> JaroWinklerSimilarity<T> with(Map<String, T> terms) {
-		return with(terms, DEFAULT_THRESHOLD);
 	}
 
 	/**
@@ -378,14 +342,14 @@ public class JaroWinklerSimilarity<T> implements Function<String, Map<T, Double>
 
 	/**
 	 * Matches a {@link String} against the terms of this
-	 * {@link JaroWinklerSimilarity} instance, considering a given threshold..
+	 * {@link JaroWinklerSimilarity} instance, considering a given threshold.
 	 * 
 	 * @param query     {@link String} that will be compared to the terms to
 	 *                  calculate the similarity.
-	 * @param threshold minimum similarity ofm matching terms.
+	 * @param threshold Minimum similarity of matching terms.
 	 * @return {@link Map} of the matching values and their ranking.
 	 * 
-	 * @since 1.0.2
+	 * @since 1.1.0
 	 */
 	public Map<T, Double> apply(String query, double threshold) {
 		// initialize result

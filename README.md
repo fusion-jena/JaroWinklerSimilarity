@@ -24,9 +24,9 @@ Usage example for similar string search:
 // prepare some Strings
 List<String> terms = Arrays.asList("hello world", "hello universe");
 // prepare the JaroWinklerSimilarity instance
-JaroWinklerSimilarity<String> jws = JaroWinklerSimilarity.with(terms);
+JaroWinklerSimilarity<String> jws = JaroWinklerSimilarity.with(terms, 0.95);
 // search similar strings
-Map<String, Double> similarStrings = jws.apply("hello word", 0.95); // please note the missing "l"
+Map<String, Double> similarStrings = jws.apply("hello word"); // please note the missing "l"
 // results
 assert similarStrings.get("hello world").equals(0.9818181818181819d);
 assert !similarStrings.containsKey("hello universe");
@@ -42,9 +42,9 @@ Collection<Integer> set = new HashSet<>();
 programs.put("hello world", list);
 programs.put("hello universe", set);
 // prepare the JaroWinklerSimilarity instance
-JaroWinklerSimilarity<Collection<Integer>> jws = JaroWinklerSimilarity.with(programs);
+JaroWinklerSimilarity<Collection<Integer>> jws = JaroWinklerSimilarity.with(programs, 0.95);
 // search matching data
-Map<Collection<Integer>, Double> searchResult = jws.apply("hello word", 0.95); // please note the missing "l"
+Map<Collection<Integer>, Double> searchResult = jws.apply("hello word"); // please note the missing "l"
 // results
 assert searchResult.get(list).equals(0.9818181818181819d);
 assert !searchResult.containsKey(set);
