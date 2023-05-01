@@ -20,7 +20,6 @@ package de.uni_jena.cs.fusion.similarity.jarowinkler;
  * #L%
  */
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -236,11 +235,12 @@ public class JaroWinklerSimilarity<T> implements Function<String, Map<T, Double>
 				} else {
 					// iterate children
 					Iterator<? extends Trie<R>> children = termTrie.childrenIterator();
-
+					boolean[] termAssignedCopy = new boolean[termTargetLength];
+					boolean[] queryAssignedCopy = new boolean[queryLength];
 					while (children.hasNext()) {
 
-						boolean[] termAssignedCopy = Arrays.copyOf(assignedTerm, termTargetLength);
-						boolean[] queryAssignedCopy = Arrays.copyOf(assignedQuery, queryLength);
+						System.arraycopy(assignedTerm, 0, termAssignedCopy, 0, termTargetLength);
+						System.arraycopy(assignedQuery, 0, queryAssignedCopy, 0, queryLength);
 
 						Trie<R> child = children.next();
 
